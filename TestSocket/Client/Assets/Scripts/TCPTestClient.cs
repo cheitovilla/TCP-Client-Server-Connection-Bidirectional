@@ -5,14 +5,25 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TCPTestClient : MonoBehaviour
 {
+    public static TCPTestClient instancia;
+
     #region private members 	
     private TcpClient socketConnection;
     private Thread clientReceiveThread;
+
     public string ipClient;
+    public string valor;
+  //  public Text messajeText;
     #endregion
+
+    private void Awake()
+    {
+        instancia = this;
+    }
     // Use this for initialization 	
     void Start()
     {
@@ -22,11 +33,19 @@ public class TCPTestClient : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             SendMessage();
         }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            SendMessage2();
+        }
         else if (Input.GetKeyDown(KeyCode.C))
+        {
+            SendMessage2();
+        }
+        else if (Input.GetKeyDown(KeyCode.V))
         {
             SendMessage2();
         }
@@ -72,6 +91,31 @@ public class TCPTestClient : MonoBehaviour
                         // Convert byte array to string message. 						
                         string serverMessage = Encoding.ASCII.GetString(incommingData);
                         Debug.Log("server message received as: " + serverMessage);
+
+                        if (serverMessage.Length == 1)
+                        {
+                            Message1();
+                            Debug.Log("se cogio uno");
+                        }
+                        else if (serverMessage.Length == 2)
+                        {
+                            Message2();
+                            Debug.Log("se cogio dos");
+                        }
+                        else if (serverMessage.Length == 3)
+                        {
+                            Message3();
+                            Debug.Log("se cogio tres");
+                        }
+                        else if (serverMessage.Length == 4)
+                        {
+                            Message4();
+                            Debug.Log("se cogio cuatro");
+                        }
+                        else
+                        {
+                            Debug.Log("nada");
+                        }
                     }
                 }
             }
@@ -96,12 +140,13 @@ public class TCPTestClient : MonoBehaviour
             NetworkStream stream = socketConnection.GetStream();
             if (stream.CanWrite)
             {
-                string clientMessage = "This is a message from one of your clients.";
+                string clientMessage = "1";
                 // Convert string message to byte array.                 
                 byte[] clientMessageAsByteArray = Encoding.ASCII.GetBytes(clientMessage);
                 // Write byte array to socketConnection stream.                 
                 stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
-                Debug.Log("Client sent his message - should be received by server");
+               // messajeText.text = "Tecla: " + clientMessage;
+                Debug.Log("Client sent his message - should be received by server - 1");
             }
         }
         catch (SocketException socketException)
@@ -122,17 +167,89 @@ public class TCPTestClient : MonoBehaviour
             NetworkStream stream = socketConnection.GetStream();
             if (stream.CanWrite)
             {
-                string clientMessage = "This is a message from one of your clients - input C.";
+                string clientMessage = "11";
                 // Convert string message to byte array.                 
                 byte[] clientMessageAsByteArray = Encoding.ASCII.GetBytes(clientMessage);
                 // Write byte array to socketConnection stream.                 
                 stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
-                Debug.Log("Client sent his message - Input C");
+                Debug.Log("Client sent his message - 11");
             }
         }
         catch (SocketException socketException)
         {
             Debug.Log("Socket exception: " + socketException);
         }
+    }
+
+    private void SendMessage3()
+    {
+        if (socketConnection == null)
+        {
+            return;
+        }
+        try
+        {
+            // Get a stream object for writing. 			
+            NetworkStream stream = socketConnection.GetStream();
+            if (stream.CanWrite)
+            {
+                string clientMessage = "111";
+                // Convert string message to byte array.                 
+                byte[] clientMessageAsByteArray = Encoding.ASCII.GetBytes(clientMessage);
+                // Write byte array to socketConnection stream.                 
+                stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
+                Debug.Log("Client sent his message - 111");
+            }
+        }
+        catch (SocketException socketException)
+        {
+            Debug.Log("Socket exception: " + socketException);
+        }
+    }
+
+    private void SendMessage4()
+    {
+        if (socketConnection == null)
+        {
+            return;
+        }
+        try
+        {
+            // Get a stream object for writing. 			
+            NetworkStream stream = socketConnection.GetStream();
+            if (stream.CanWrite)
+            {
+                string clientMessage = "1111";
+                // Convert string message to byte array.                 
+                byte[] clientMessageAsByteArray = Encoding.ASCII.GetBytes(clientMessage);
+                // Write byte array to socketConnection stream.                 
+                stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
+                Debug.Log("Client sent his message - 1111");
+            }
+        }
+        catch (SocketException socketException)
+        {
+            Debug.Log("Socket exception: " + socketException);
+        }
+    }
+
+    public void Message1()
+    {
+        valor = "1";
+    }
+
+    public void Message2()
+    {
+        valor = "11";
+    }
+
+    public void Message3()
+    {
+        valor = "111";
+    }
+
+    public void Message4()
+    {
+        valor = "1111";
     }
 }
