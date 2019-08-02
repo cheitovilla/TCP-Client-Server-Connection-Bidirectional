@@ -43,11 +43,11 @@ public class TCPTestClient : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.C))
         {
-            SendMessage2();
+            SendMessage3();
         }
         else if (Input.GetKeyDown(KeyCode.V))
         {
-            SendMessage2();
+            SendMessage4();
         }
     }
     /// <summary> 	
